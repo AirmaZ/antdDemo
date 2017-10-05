@@ -15,6 +15,7 @@ var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config');
 var DeployPlugin = require('./deploy.plugin');
 var utils = require('./utils');
+var opn = require('opn');
 
 var PORT = 8080;
 var HOST = utils.getIP();
@@ -28,7 +29,6 @@ var localPublicPath = 'http://' + HOST + ':' + PORT + '/';
 
 config.output.publicPath = localPublicPath; 
 config.entry.app.unshift('webpack-dev-server/client?' + localPublicPath);
-
 // 开启热替换相关设置
 if (hot === true) {
   config.entry.app.unshift('webpack/hot/only-dev-server');
@@ -66,7 +66,9 @@ new WebpackDevServer(webpack(config), {
   // This is handy if you are using a html5 router.
   historyApiFallback: true,
 }).listen(PORT, HOST, function() {
-  console.log(localPublicPath);
+  console.log('即将打开chrome：'+localPublicPath);
+// Specify app arguments
+    opn(localPublicPath+'webpack-dev-server/', {app: ['google chrome']});
 });
 
 
